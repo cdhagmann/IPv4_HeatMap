@@ -24,10 +24,11 @@
 
 <body>
 
-
+  
   <div id='map'></div>
 
   <script>
+    // Based on Mapbox template https://www.mapbox.com/mapbox-gl-js/example/heatmap-layer/
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2RoYWdtYW5uIiwiYSI6ImNqbzkzd2V4NDFkZjkzcHMxbmI2b2ZxeGwifQ.i73lUa1zZaJ6216dugCr_g';
     var map = new mapboxgl.Map({
       container: 'map',
@@ -43,18 +44,18 @@
     map.on('load', function () {
       // Add a geojson point source.
       // Heatmap layers also work with a vector tile source.
-      map.addSource('earthquakes', {
+      map.addSource('geoname', {
         "type": "geojson",
         "data": "https://ipv4-heatmap.herokuapp.com/locations"
       });
 
       map.addLayer({
-        "id": "earthquakes-heat",
+        "id": "ipv4-heat",
         "type": "heatmap",
-        "source": "earthquakes",
+        "source": "geoname",
         "maxzoom": 9,
         "paint": {
-          // Increase the heatmap weight based on frequency and property magnitude
+          // Increase the heatmap weight based on frequency
           "heatmap-weight": [
             "interpolate",
             ["linear"],
@@ -105,12 +106,12 @@
       }, 'waterway-label');
 
       map.addLayer({
-        "id": "earthquakes-point",
+        "id": "ipv4-point",
         "type": "circle",
-        "source": "earthquakes",
+        "source": "geoname",
         "minzoom": 7,
         "paint": {
-          // Size circle radius by earthquake magnitude and zoom level
+          // Size circle radius by ipv4 count and zoom level
           "circle-radius": [
             "interpolate",
             ["linear"],
@@ -130,7 +131,7 @@
               6, 50
             ]
           ],
-          // Color circle by earthquake magnitude
+          // Color circle by ipv4 count
           "circle-color": [
             "interpolate",
             ["linear"],
